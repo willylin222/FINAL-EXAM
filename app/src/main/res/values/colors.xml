@@ -1,13 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PDTA</string>
-    <string name="title">寵物日常追蹤助手</string>
-    <string name="locationtitle"><![CDATA[🗺️ 位置資訊]]></string>
-    <string name="locationmanager">目前位置：\n (動態更新的經緯度數據)</string>
-    <string name="line">------------------------------------------------------------------------------</string>
-    <string name="acctitle">🏋️ 動態監控</string>
-    <string name="acc">"陀螺儀偵測：\n (顯示 X/Y/Z 軸的數據變化) </string>
-    <string name="charttitle">📊 活動數據統計</string>
-    <string name="chart">- 步數：(一周) \n- 活動距離：(公里)</string>
-    <string name="btn">開始追蹤</string>
-    <string name="take_photo">拍照</string>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bgcolor">#DBD4E3</color>
+    <color name="layoutcolor">#FFF7FCFF</color>
+    <color name="no">#00F44336</color>
 </resources>
