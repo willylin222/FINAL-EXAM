@@ -1,6 +1,7 @@
 package com.example.afinal
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -41,6 +42,11 @@ class MainActivity : AppCompatActivity() , LocationListener , SensorEventListene
             loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, this)
         }
         loc.requestLocationUpdates(LocationManager.GPS_PROVIDER)
+
+        //---🏋️ 動態監控
+        ssmg = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        mysr = ssmg.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) as Sensor
     }
 
     override fun onLocationChanged(location: Location) {
