@@ -3,6 +3,7 @@ package com.example.afinal
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -14,6 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import com.example.afinal.databinding.ActivityMainBinding
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 class MainActivity : AppCompatActivity() , LocationListener , SensorEventListener {
     private lateinit var bd : ActivityMainBinding
@@ -47,7 +53,70 @@ class MainActivity : AppCompatActivity() , LocationListener , SensorEventListene
         ssmg = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         mysr = ssmg.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) as Sensor
+
+
+        bd.button.setOnClickListener {
+            // 定義步數與活動距離的數據
+            val barEntries = ArrayList<BarEntry>().apply {
+                add(BarEntry(1f, 222f))   // 星期一：步數
+                add(BarEntry(2f, 716f))   // 星期二：步數
+                add(BarEntry(3f, 1107f))   // 星期三：步數
+                add(BarEntry(4f, 886f))   // 星期四：步數
+                add(BarEntry(5f, 996f))   // 星期五：步數
+                add(BarEntry(6f, 2024f))  // 星期六：步數
+                add(BarEntry(7f, 2003f))  // 星期日：步數
+            }
+
+            // 設定數據
+            val dataSet = BarDataSet(barEntries, "寵物每日步數")
+            dataSet.valueTextSize = 15f //數據文字大小
+            dataSet.valueTextColor = Color.BLACK //數據文字顏色
+            dataSet.colors = listOf(
+                Color.BLUE, Color.GREEN, Color.YELLOW,
+                Color.MAGENTA, Color.CYAN, Color.RED,
+                Color.LTGRAY
+            ) //長條圖顏色
+
+            // 將數據加到 BarData
+            val petActivity = BarData(dataSet)
+            petActivity.barWidth = 0.6f // 調整柱子的寬度
+
+            // 指定圖表數據
+            bd.barchart.data = petActivity
+
+            // 美化 X 軸 星期名稱
+            val X = bd.barchart.xAxis
+            X.position = XAxis.XAxisPosition.BOTTOM // X軸底部增加日期
+            X.valueFormatter = IndexAxisValueFormatter(
+                arrayOf(" ","星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日")
+            )
+            X.textSize = 12f
+            X.setDrawGridLines(false) // 移除網格線
+
+            // 美化 Y 軸
+            val left = bd.barchart.axisLeft
+            left.isEnabled = false // 隱藏左側 Y 軸
+
+            val right = bd.barchart.axisRight
+            right.axisMinimum = 0f // 最小值為 0
+            right.textSize = 12f
+
+            // 設定圖表描述與動畫
+            bd.barchart.description.text = "寵物每週步數統計"
+            bd.barchart.description.textSize = 12f
+            bd.barchart.animateY(1000)
+
+            // 更新圖表
+            bd.barchart.invalidate()
+
+            val totalSteps = barEntries.sumBy { it.y.toInt() }
+            val averageDistancePerStep = 0.0008
+            val totalDistance = totalSteps * averageDistancePerStep
+            bd.chart.text = "步數：一周共移動了 $totalSteps 步數 \n活動距離：約 ${String.format("%.2f", totalDistance)} 公里"
+        }
     }
+
+
 
     override fun onLocationChanged(location: Location) {
         //TODO("Not yet implemented")
