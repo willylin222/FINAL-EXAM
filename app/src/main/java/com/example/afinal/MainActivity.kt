@@ -57,8 +57,42 @@ class MainActivity : AppCompatActivity() , LocationListener , SensorEventListene
         bd.loc.text = "目前位置：\n $latitude\n$longitude"
     }
 
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mysr.also {
+            ssmg.registerListener(this,it,SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mysr.also {
+            ssmg.unregisterListener(this)
+        }
+    }
+
     override fun onSensorChanged(event: SensorEvent?) {
         //TODO("Not yet implemented")
+        when(event?.sensor?.type){
+            Sensor.TYPE_ACCELEROMETER -> {
+                val x = event.values[0]
+                val y = event.values[1]
+                val z = event.values[2]
+
+                var act = ""
+                if (x > -8 && x < 8 && y > 8 && z > -8 && z < 8){
+                    act = "寵物目前可能站著或正在移動"
+                }else{
+                    act = "寵物目前可能躺著"
+                }
+                bd.acc.text="陀螺儀偵測：$act \n (X:$x) (Y:$y) (Z:$z)"
+            }
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
